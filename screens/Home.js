@@ -21,7 +21,7 @@ export function HomeUi({navigation}){
           <SafeAreaView style={styles.container}>
             <StatusBar style="auto" />
             <View style={styles.iconView}>
-              <Image source={require("./assets/images/icon.png")} />
+              <Image source={require("../assets/images/icon.png")} />
             </View>
             <View style={styles.contentView}>
               <TextInput style={styles.input} placeholder="Mobile Number" maxLength={10} inputMode="numeric"/>

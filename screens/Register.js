@@ -1,5 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import {
+  Alert,
   Image,
   Pressable,
   SafeAreaView,
@@ -11,11 +12,12 @@ import {
 import { useFonts } from "expo-font";
 import DropDownPicker from 'react-native-dropdown-picker';
 import { useState } from "react";
+import { ErrorUi } from "../components/Error";
 
 export function RegisterUI({navigation}) {
   const [fontsLoaded] = useFonts({
-    "Montserrat-Regular": require("./assets/fonts/Montserrat-Regular.ttf"),
-    "Montserrat-SemiBold": require("./assets/fonts/Montserrat-SemiBold.ttf"),
+    "Montserrat-Regular": require("../assets/fonts/Montserrat-Regular.ttf"),
+    "Montserrat-SemiBold": require("../assets/fonts/Montserrat-SemiBold.ttf"),
   });
 
   const [open, setOpen] = useState(false);
@@ -25,21 +27,35 @@ export function RegisterUI({navigation}) {
     {label: 'Student', value: 'student'}
   ]);
 
+  const [fname,setFname] = useState("");
+  const [lname,setLname] = useState("");
+  const [mobile,setMobile] = useState("");
+  const [password,setPassword] = useState("");
+  const [cpassword,setCPassword] = useState("");
+
+  const [error_1,setError_1] = useState(null);
+  const [error_2,setError_2] = useState(null);
+  const [error_3,setError_3] = useState(null);
+  const [error_4,setError_4] = useState(null);
+  const [error_5,setError_5] = useState(null);
+
   if (fontsLoaded) {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
         <View style={styles.iconView}>
-          <Image source={require("./assets/images/icon.png")} />
+          <Image source={require("../assets/images/icon.png")} />
         </View>
         <View style={styles.contentView}>
-          <TextInput style={styles.input} placeholder="First Name" />
-          <TextInput style={styles.input} placeholder="Last Name" />
+          <TextInput style={styles.input} placeholder="First Name" onChangeText={setFname} onChange={()=> setError_1(null)} />
+          <ErrorUi error={error_1}/>
+          <TextInput style={styles.input} placeholder="Last Name" onChangeText={setLname}/>
           <TextInput
             style={styles.input}
             placeholder="Mobile Number"
             maxLength={10}
             inputMode="numeric"
+            onChangeText={setMobile}
           />
           <DropDownPicker 
                 open={open}
@@ -51,20 +67,41 @@ export function RegisterUI({navigation}) {
                 disableBorderRadius={true}
                 textStyle={{fontSize: 18,fontFamily: "Montserrat-Regular",letterSpacing:1}}
                 containerStyle={{width:310,margin:5}}
-                placeholder="Select User Type"/>
+                placeholder="Select User Type"
+                />
 
           <TextInput
             style={styles.input}
             placeholder="Password"
             secureTextEntry={true}
+            onChangeText={setPassword}
           />
           <TextInput
             style={styles.input}
             placeholder="Confirm Password"
             secureTextEntry={true}
+            onChangeText={setCPassword}
           />
           
-          <Pressable>
+          <Pressable onPress={async ()=>{
+           const response = await fetch("http://192.168.43.9/MyNotes/register.php",
+           {
+            method:"POST",
+            body:JSON.stringify(
+              {
+                "fname": fname,
+                "lname": lname,
+                "mobile": mobile,
+                "type": value,
+                "password": password,
+                "c_password": cpassword,
+              }
+            )
+           });
+           const responseText = await response.text();
+           if(responseText == "error_1")
+              setError_1("Please enter first name");
+          }}>
             <View style={styles.loginButton}>
               <Text style={styles.text}>Create New Account</Text>
             </View>
@@ -79,6 +116,8 @@ export function RegisterUI({navigation}) {
     );
   }
 }
+
+
 
 const styles = StyleSheet.create({
   container: {
@@ -131,7 +170,4 @@ const styles = StyleSheet.create({
     color: "black",
     letterSpacing: 1,
   },
-  dropdown:{
-
-  }
 });
