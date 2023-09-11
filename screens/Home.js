@@ -12,8 +12,8 @@ import { useFonts } from "expo-font";
 
 export function HomeUi({navigation}){
     const [fontsLoaded] = useFonts({
-        "Montserrat-Regular": require("./assets/fonts/Montserrat-Regular.ttf"),
-        "Montserrat-SemiBold": require("./assets/fonts/Montserrat-SemiBold.ttf")    
+        "Montserrat-Regular": require("../assets/fonts/Montserrat-Regular.ttf"),
+        "Montserrat-SemiBold": require("../assets/fonts/Montserrat-SemiBold.ttf")    
       });
     
       if (fontsLoaded) {

@@ -19,7 +19,7 @@ export function RegisterUI({navigation}) {
   });
 
   const [open, setOpen] = useState(false);
-  const [value, setValue] = useState("Select User Type");
+  const [value, setValue] = useState(null);
   const [items, setItems] = useState([
     {label: 'Employee', value: 'employee'},
     {label: 'Student', value: 'student'}
