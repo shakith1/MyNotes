@@ -141,6 +141,12 @@ export function RegisterUI({ navigation }) {
                 setError_5("Please enter 6 characters long password");
               else if (responseText == "error_9")
                 setError_6("Passwords did not match");
+              else if (responseText == "error_10")
+                setError_6("User already exists. Please Sign In");
+              else if (responseText == "success"){
+                Alert.alert("Info", "Account created successfully");
+                navigation.navigate('Home');
+              }
             }}
           >
             <View style={styles.loginButton}>
