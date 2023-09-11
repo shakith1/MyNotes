@@ -135,6 +135,12 @@ export function RegisterUI({ navigation }) {
                 setError_5("Please enter password");
               else if (responseText == "error_6")
                 setError_6("Please enter confirm password");
+              else if (responseText == "error_7")
+                setError_3("Please enter valid mobile number");
+              else if (responseText == "error_8")
+                setError_5("Please enter 6 characters long password");
+              else if (responseText == "error_9")
+                setError_6("Passwords did not match");
             }}
           >
             <View style={styles.loginButton}>
