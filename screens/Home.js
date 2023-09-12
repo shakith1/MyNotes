@@ -71,7 +71,7 @@ export function HomeUi({ navigation }) {
               //   else if (responseText == "error_4")
               //   setError_2("Incorrect mobile number or password");
               //   else if (responseText == "success")
-                  navigation.navigate("Note");
+                  navigation.navigate("Note",{"mobile":mobile});
             }}
           >
             <View style={styles.loginButton}>

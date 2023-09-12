@@ -1,55 +1,110 @@
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
+import { useEffect, useState } from "react";
 import {
+  Alert,
   Image,
+  ImageBackground,
   Platform,
+  Pressable,
   SafeAreaView,
   StyleSheet,
   Text,
   View,
 } from "react-native";
+import {
+  Menu,
+  MenuOptions,
+  MenuOption,
+  MenuTrigger,
+  MenuProvider,
+} from "react-native-popup-menu";
 
-export function NoteUi({ navigation }) {
+export function NoteUi({ navigation, route }) {
   const [fontsLoaded] = useFonts({
     "Montserrat-Regular": require("../assets/fonts/Montserrat-Regular.ttf"),
-    "Montserrat-SemiBold": require("../assets/fonts/Montserrat-SemiBold.ttf"),
     "Ubuntu-Regular": require("../assets/fonts/Ubuntu-Regular.ttf"),
   });
 
+  const [username, setUserName] = useState("");
+
+  const getUser = async () => {
+    const response = await fetch("http://192.168.43.9/MyNotes/search.php", {
+      method: "POST",
+      body: JSON.stringify({
+        mobile: route.params.mobile,
+      }),
+    });
+    user = await response.json();
+    setUserName(user.fname + " " + user.lname);
+  };
+
+  useEffect(() => {
+    getUser();
+  }, []);
+
   if (fontsLoaded) {
     return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar style="auto" />
-        <View style={styles.headerView}>
-          <View style={styles.header}>
-            <View style={styles.headerTitle}>
-              <Text style={styles.title}>My Notes</Text>
-            </View>
-            <View style={styles.headerContent}>
-              <View style={styles.headerButtonView}>
-              <Image
-                  style={styles.add}
-                  source={require("../assets/images/plus.png")}
-                />
+      <MenuProvider>
+        <SafeAreaView style={styles.container}>
+          <StatusBar style="auto" />
+          <View style={styles.headerView}>
+            <View style={styles.header}>
+              <View style={styles.headerTitle}>
+                <Text style={styles.title}>My Notes</Text>
               </View>
-              <View style={styles.headerMenuView}>
-                <Image
-                  style={styles.menu}
-                  source={require("../assets/images/menu.png")}
-                />
+
+              <View style={styles.headerContent}>
+                <View style={styles.headerButtonView}>
+                  <Pressable onPress={()=>{navigation.navigate("NewNote")}}>
+                  <Image
+                    style={styles.add}
+                    source={require("../assets/images/plus.png")}
+                  />
+                  </Pressable>
+                </View>
+                <View style={styles.headerMenuView}>
+                  <Menu>
+                    <MenuTrigger>
+                      <Image
+                        style={styles.menu}
+                        source={require("../assets/images/menu.png")}
+                      />
+                    </MenuTrigger>
+                    <MenuOptions>
+                      <MenuOption style={styles.menuOption} disableTouchable>
+                        <Image
+                          style={styles.optionIcon}
+                          source={require("../assets/images/user.png")}
+                        />
+                        <Text style={styles.username}>{username}</Text>
+                      </MenuOption>
+                      <MenuOption
+                        style={styles.menuOption}
+                        onSelect={() => alert(`Delete`)}
+                      >
+                        <Image
+                          style={styles.optionIcon}
+                          source={require("../assets/images/logout.png")}
+                        />
+                        <Text style={styles.username}>Logout</Text>
+                      </MenuOption>
+                    </MenuOptions>
+                  </Menu>
+                </View>
               </View>
             </View>
           </View>
-        </View>
-        <View style={styles.contentView}>
-          <Image
-            style={styles.image}
-            source={require("../assets/images/image.jpg")}
-          />
-          <Text style={styles.text1}>No Notes to Show</Text>
-          <Text style={styles.text2}>Click + to add a new note</Text>
-        </View>
-      </SafeAreaView>
+          <View style={styles.contentView}>
+            <Image
+              style={styles.image}
+              source={require("../assets/images/image.jpg")}
+            />
+            <Text style={styles.text1}>No Notes to Show</Text>
+            <Text style={styles.text2}>Click + to add a new note</Text>
+          </View>
+        </SafeAreaView>
+      </MenuProvider>
     );
   }
 }
@@ -81,16 +136,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
     justifyContent: "flex-end",
   },
-  headerButtonView: { 
-    // backgroundColor: "red" 
-    justifyContent:"center",
-    alignItems:"center"
+  headerButtonView: {
+    // backgroundColor: "red"
+    justifyContent: "center",
+    alignItems: "center",
   },
   headerMenuView: {
-    //  backgroundColor: "yellow" 
-    justifyContent:"center",
-    alignItems:"center"
-},
+    //  backgroundColor: "yellow"
+    justifyContent: "center",
+    alignItems: "center",
+  },
   contentView: {
     flex: 6,
     // backgroundColor: "yellow",
@@ -124,7 +179,19 @@ const styles = StyleSheet.create({
   },
   add: {
     width: 23,
-    height:23,
-    marginEnd: 25
+    height: 23,
+    marginEnd: 25,
+  },
+  menuOption: {
+    flexDirection: "row",
+    alignItems: "center",
+  },
+  optionIcon: {
+    width: 25,
+    height: 25,
+  },
+  username: {
+    marginStart: 6,
+    fontFamily: "Montserrat-Regular",
   },
 });
