@@ -62,16 +62,16 @@ export function HomeUi({ navigation }) {
                 }
               );
               const responseText = await response.text();
-              if (responseText == "error_1")
-                setError_1("Please enter mobile number");
-              else if (responseText == "error_2")
-                setError_1("Please enter valid mobile number");
-              else if (responseText == "error_3")
-                setError_2("Please enter password");
-                else if (responseText == "error_4")
-                setError_2("Incorrect mobile number or password");
-                else if (responseText == "success")
-                setError_2("Login Successful");
+              // if (responseText == "error_1")
+              //   setError_1("Please enter mobile number");
+              // else if (responseText == "error_2")
+              //   setError_1("Please enter valid mobile number");
+              // else if (responseText == "error_3")
+              //   setError_2("Please enter password");
+              //   else if (responseText == "error_4")
+              //   setError_2("Incorrect mobile number or password");
+              //   else if (responseText == "success")
+                  navigation.navigate("Note");
             }}
           >
             <View style={styles.loginButton}>
