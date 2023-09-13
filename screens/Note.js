@@ -28,6 +28,8 @@ export function NoteUi({ navigation, route }) {
 
   const [username, setUserName] = useState("");
 
+  var mobile = null;
+
   const getUser = async () => {
     const response = await fetch("http://192.168.43.9/MyNotes/search.php", {
       method: "POST",
@@ -37,6 +39,7 @@ export function NoteUi({ navigation, route }) {
     });
     user = await response.json();
     setUserName(user.fname + " " + user.lname);
+    mobile = user.mobile;
   };
 
   useEffect(() => {
@@ -56,7 +59,7 @@ export function NoteUi({ navigation, route }) {
 
               <View style={styles.headerContent}>
                 <View style={styles.headerButtonView}>
-                  <Pressable onPress={()=>{navigation.navigate("NewNote")}}>
+                  <Pressable onPress={()=>{navigation.navigate("NewNote",{"mobile": mobile})}}>
                   <Image
                     style={styles.add}
                     source={require("../assets/images/plus.png")}

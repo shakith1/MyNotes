@@ -56,8 +56,8 @@ export function HomeUi({ navigation }) {
                 {
                   method: "POST",
                   body: JSON.stringify({
-                    mobile: mobile,
-                    password: password,
+                    "mobile": mobile,
+                    "password": password,
                   }),
                 }
               );
