@@ -1,6 +1,6 @@
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import {
   Alert,
   Image,
@@ -19,6 +19,7 @@ import {
   MenuTrigger,
   MenuProvider,
 } from "react-native-popup-menu";
+import { NoteListUI } from "../components/NoteList";
 
 export function NoteUi({ navigation, route }) {
   const [fontsLoaded] = useFonts({
@@ -26,9 +27,8 @@ export function NoteUi({ navigation, route }) {
     "Ubuntu-Regular": require("../assets/fonts/Ubuntu-Regular.ttf"),
   });
 
-  const [username, setUserName] = useState("");
-
-  var mobile = null;
+  const [username, setUserName] = useState(null);
+  const [mobile, setMobile] = useState(null);
 
   const getUser = async () => {
     const response = await fetch("http://192.168.43.9/MyNotes/search.php", {
@@ -37,9 +37,10 @@ export function NoteUi({ navigation, route }) {
         mobile: route.params.mobile,
       }),
     });
-    user = await response.json();
+    const user = await response.json();
     setUserName(user.fname + " " + user.lname);
-    mobile = user.mobile;
+    setMobile(user.mobile);
+    // mobile = user.mobile;
   };
 
   useEffect(() => {
@@ -59,11 +60,15 @@ export function NoteUi({ navigation, route }) {
 
               <View style={styles.headerContent}>
                 <View style={styles.headerButtonView}>
-                  <Pressable onPress={()=>{navigation.navigate("NewNote",{"mobile": mobile})}}>
-                  <Image
-                    style={styles.add}
-                    source={require("../assets/images/plus.png")}
-                  />
+                  <Pressable
+                    onPress={() => {
+                      navigation.navigate("NewNote", { mobile: mobile });
+                    }}
+                  >
+                    <Image
+                      style={styles.add}
+                      source={require("../assets/images/plus.png")}
+                    />
                   </Pressable>
                 </View>
                 <View style={styles.headerMenuView}>
@@ -99,12 +104,7 @@ export function NoteUi({ navigation, route }) {
             </View>
           </View>
           <View style={styles.contentView}>
-            <Image
-              style={styles.image}
-              source={require("../assets/images/image.jpg")}
-            />
-            <Text style={styles.text1}>No Notes to Show</Text>
-            <Text style={styles.text2}>Click + to add a new note</Text>
+            {mobile != null ? <NoteListUI mobile={mobile} /> : null}
           </View>
         </SafeAreaView>
       </MenuProvider>
@@ -149,20 +149,16 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
   },
-  contentView: {
-    flex: 6,
-    // backgroundColor: "yellow",
-    alignItems: "center",
-    justifyContent: "center",
-  },
   title: {
     fontSize: 24,
     fontFamily: "Ubuntu-Regular",
     color: "#f0b11d",
   },
-  image: {
-    width: 150,
-    height: 150,
+  contentView: {
+    flex: 6,
+    // backgroundColor: "yellow",
+    // alignItems: "center",
+    // justifyContent: "center",
   },
   text1: {
     marginTop: 10,

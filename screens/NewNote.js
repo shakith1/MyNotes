@@ -109,7 +109,7 @@ export function NewNoteUi({ navigation,route }) {
 
         <View style={styles.headerView}>
           <View style={styles.firstView}>
-            <Pressable onPress={() => navigation.navigate("Note")}>
+            <Pressable onPress={() => navigation.goBack()}>
               <Image
                 style={styles.backBtn}
                 source={require("../assets/images/back.png")}
