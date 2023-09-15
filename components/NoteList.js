@@ -48,8 +48,8 @@ export function NoteListUI({ mobile }) {
       <View>
         <FlatList
           data={data}
-          renderItem={({ item }) => {
-            return <NoteListViewUi item={item} />
+          renderItem={({ item,index }) => {
+            return <NoteListViewUi item={item} index={index} />
           }}
         />
       </View>

@@ -99,7 +99,8 @@ export function NewNoteUi({ navigation,route }) {
     if (responseText == "error_1") setError_1("Please enter title");
     else if (responseText == "error_2") setError_2("Please select category");
     else if (responseText == "error_3") setError_3("Please enter description");
-    else alert(responseText);
+    else if(responseText == "success")
+    navigation.navigate("Note");
   }
 
   if (fontsLoaded) {
