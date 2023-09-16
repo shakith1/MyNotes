@@ -44,83 +44,90 @@ export function HomeUi({ navigation }) {
       // error reading value
     }
   };
-  
+
   useEffect(() => {
     getData();
   }, []);
 
   if (fontsLoaded) {
     // if (ui == null) {
-      return (
-        <SafeAreaView style={styles.container}>
-          <StatusBar style="auto" />
-          <View style={styles.iconView}>
-            <Image source={require("../assets/images/icon.png")} />
-          </View>
-          <View style={styles.contentView}>
-            <TextInput
-              style={styles.input}
-              placeholder="Mobile Number"
-              maxLength={10}
-              inputMode="numeric"
-              onChangeText={setMobile}
-              onChange={() => setError_1(null)}
-            />
-            <ErrorUi error={error_1} />
-            <TextInput
-              style={styles.input}
-              placeholder="Password"
-              secureTextEntry={true}
-              onChangeText={setPassword}
-              onChange={() => setError_2(null)}
-            />
-            <ErrorUi error={error_2} />
-            <Pressable
-              onPress={async () => {
-                const response = await fetch(
-                  "http://192.168.43.9/MyNotes/signin.php",
-                  {
-                    method: "POST",
-                    body: JSON.stringify({
-                      mobile: mobile,
-                      password: password,
-                    }),
-                  }
-                );
-                const responseText = await response.text();
-                // if (responseText == "error_1")
-                //   setError_1("Please enter mobile number");
-                // else if (responseText == "error_2")
-                //   setError_1("Please enter valid mobile number");
-                // else if (responseText == "error_3")
-                //   setError_2("Please enter password");
-                //   else if (responseText == "error_4")
-                //   setError_2("Incorrect mobile number or password");
-                //   else if (responseText == "success")
+    return (
+      <SafeAreaView style={styles.container}>
+        <StatusBar style="auto" />
+        <View style={styles.iconView}>
+          <Image source={require("../assets/images/icon.png")} />
+        </View>
+        <View style={styles.contentView}>
+          <TextInput
+            style={styles.input}
+            placeholder="Mobile Number"
+            maxLength={10}
+            inputMode="numeric"
+            onChangeText={setMobile}
+            onChange={() => setError_1(null)}
+          />
+          <ErrorUi error={error_1} />
+          <TextInput
+            style={styles.input}
+            placeholder="Password"
+            secureTextEntry={true}
+            onChangeText={setPassword}
+            onChange={() => setError_2(null)}
+          />
+          <ErrorUi error={error_2} />
+          <Pressable
+            onPress={async () => {
+              const response = await fetch(
+                "http://192.168.43.9/MyNotes/signin.php",
+                {
+                  method: "POST",
+                  body: JSON.stringify({
+                    mobile: mobile,
+                    password: password,
+                  }),
+                }
+              );
+              const responseText = await response.text();
+              if (!responseText.includes("{")) {
+                const matches = responseText.match(/"([^"]+)"/);
+
+                if (matches) {
+                  if (matches[1] == "error_1")
+                    setError_1("Please enter mobile number");
+                  else if (matches[1] == "error_2")
+                    setError_1("Please enter valid mobile number");
+                  else if (matches[1] == "error_3")
+                    setError_2("Please enter password");
+                  else if (matches[1] == "error_4")
+                    setError_2("Incorrect mobile number or password");
+                }
+              } else {
                 storeData(responseText);
                 navigation.navigate("Note");
-                // alert(responseText)
-              }}
-            >
-              <View style={styles.loginButton}>
-                <Text style={styles.text}>Sign In</Text>
-              </View>
-            </Pressable>
-            <Pressable
-              onPress={() => {
-                navigation.navigate("Register");
-                setError_1(null);
-                setError_2(null);
-              }}
-            >
-              <View style={styles.registerButton}>
-                <Text style={styles.text}>Register</Text>
-              </View>
-            </Pressable>
-          </View>
-        </SafeAreaView>
-      );
-    }}
+              }
+              alert(responseText);
+            }}
+          >
+            <View style={styles.loginButton}>
+              <Text style={styles.text}>Sign In</Text>
+            </View>
+          </Pressable>
+          <Pressable
+            onPress={() => {
+              navigation.navigate("Register");
+              setError_1(null);
+              setError_2(null);
+            }}
+          >
+            <View style={styles.registerButton}>
+              <Text style={styles.text}>Register</Text>
+            </View>
+          </Pressable>
+        </View>
+      </SafeAreaView>
+    );
+  }
+}
 //   }else
 //     navigation.navigate("Note");
 // }

@@ -45,7 +45,7 @@ export function NoteListUI({ mobile }) {
     );
   } else {
     return (
-      <View>
+      <View style={{marginBottom:10}}>
         <FlatList
           data={data}
           renderItem={({ item,index }) => {
@@ -60,7 +60,6 @@ export function NoteListUI({ mobile }) {
 const styles = StyleSheet.create({
   contentView: {
     flex: 6,
-    // backgroundColor: "yellow",
     alignItems: "center",
     justifyContent: "center",
   },
