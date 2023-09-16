@@ -24,7 +24,6 @@ export function HomeUi({ navigation }) {
 
   const [error_1, setError_1] = useState(null);
   const [error_2, setError_2] = useState(null);
-  const [ui, setUi] = useState(null);
 
   const storeData = async (value) => {
     try {
@@ -50,7 +49,6 @@ export function HomeUi({ navigation }) {
   }, []);
 
   if (fontsLoaded) {
-    // if (ui == null) {
     return (
       <SafeAreaView style={styles.container}>
         <StatusBar style="auto" />
@@ -105,7 +103,6 @@ export function HomeUi({ navigation }) {
                 storeData(responseText);
                 navigation.navigate("Note");
               }
-              alert(responseText);
             }}
           >
             <View style={styles.loginButton}>
@@ -128,9 +125,6 @@ export function HomeUi({ navigation }) {
     );
   }
 }
-//   }else
-//     navigation.navigate("Note");
-// }
 
 const styles = StyleSheet.create({
   container: {
@@ -165,7 +159,7 @@ const styles = StyleSheet.create({
     height: 45,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#e0b541",
+    backgroundColor: "#f0b11d",
     margin: 10,
     borderRadius: 10,
   },

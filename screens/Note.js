@@ -168,12 +168,10 @@ const styles = StyleSheet.create({
     justifyContent: "flex-end",
   },
   headerButtonView: {
-    // backgroundColor: "red"
     justifyContent: "center",
     alignItems: "center",
   },
   headerMenuView: {
-    //  backgroundColor: "yellow"
     justifyContent: "center",
     alignItems: "center",
   },
@@ -184,9 +182,6 @@ const styles = StyleSheet.create({
   },
   contentView: {
     flex: 6,
-    // backgroundColor: "yellow",
-    // alignItems: "center",
-    // justifyContent: "center",
   },
   text1: {
     marginTop: 10,

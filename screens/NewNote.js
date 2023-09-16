@@ -188,7 +188,6 @@ const styles = StyleSheet.create({
   },
   headerView: {
     flex: 1,
-    // backgroundColor: "red",
     flexDirection: "row",
     justifyContent: "center",
     alignItems: "center",
@@ -209,9 +208,6 @@ const styles = StyleSheet.create({
   },
   contentView: {
     flex: 6,
-    // backgroundColor: "yellow",
-    // alignItems: "center",
-    // justifyContent: "center",
   },
   backBtn: {
     width: 35,
@@ -265,7 +261,6 @@ const styles = StyleSheet.create({
     marginTop: 5,
     marginEnd: 15,
     width: "auto",
-    // height: {height},
     fontSize: 18,
     padding: 10,
     fontFamily: "Montserrat-Regular",
