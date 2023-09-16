@@ -1,7 +1,5 @@
 import { StatusBar } from "expo-status-bar";
 import {
-  Alert,
-  BackHandler,
   Image,
   Pressable,
   SafeAreaView,
@@ -14,7 +12,6 @@ import { useFonts } from "expo-font";
 import { useEffect, useState } from "react";
 import { ErrorUi } from "../components/Error";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useIsFocused } from "@react-navigation/native";
 
 export function HomeUi({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -27,7 +24,7 @@ export function HomeUi({ navigation }) {
 
   const [error_1, setError_1] = useState(null);
   const [error_2, setError_2] = useState(null);
-  const [ui, setUi] = useState(0);
+  const [ui, setUi] = useState(null);
 
   const storeData = async (value) => {
     try {
@@ -41,7 +38,7 @@ export function HomeUi({ navigation }) {
     try {
       const jsonValue = await AsyncStorage.getItem("user");
       if (jsonValue != null) {
-        setUi(1);
+        navigation.navigate("Note");
       }
     } catch (e) {
       // error reading value
@@ -53,7 +50,7 @@ export function HomeUi({ navigation }) {
   }, []);
 
   if (fontsLoaded) {
-    if (ui == 0) {
+    // if (ui == null) {
       return (
         <SafeAreaView style={styles.container}>
           <StatusBar style="auto" />
@@ -123,10 +120,10 @@ export function HomeUi({ navigation }) {
           </View>
         </SafeAreaView>
       );
-    }
-  }else if(ui == 0)
-    navigation.navigate("Note");
-}
+    }}
+//   }else
+//     navigation.navigate("Note");
+// }
 
 const styles = StyleSheet.create({
   container: {

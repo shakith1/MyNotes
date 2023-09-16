@@ -48,35 +48,13 @@ export function NoteUi({ navigation}) {
     }
   };
 
-  const getUser = async () => {
-    const response = await fetch("http://192.168.43.9/MyNotes/search.php", {
-      method: "POST",
-      body: JSON.stringify({
-        mobile: route.params.mobile,
-      }),
-    });
-    const user = await response.json();
-    setUserName(user.fname + " " + user.lname);
-    setMobile(user.mobile);
-  };
-
   useEffect(() => {
     getData();
   }, []);
 
   useBackHandler(() => {
     if (isFocused) {
-      Alert.alert('Exit App', 'Do you want to exit the app?', [
-        {
-          text: 'Cancel',
-          onPress: () => null,
-          style: 'cancel',
-        },
-        {
-          text: 'Exit',
-          onPress: () => BackHandler.exitApp(),
-        },
-      ]);
+      BackHandler.exitApp();
       return true; // Prevent the default back action only on the home page
     }
     return false; // Allow the default back action to occur (navigate to the previous screen)
@@ -124,7 +102,23 @@ export function NoteUi({ navigation}) {
                       </MenuOption>
                       <MenuOption
                         style={styles.menuOption}
-                        onSelect={() => alert(`Delete`)}
+                        onSelect={() => {
+                          Alert.alert('Logout', 'Do you want to logout from My Notes ?', [
+                            {
+                              text: 'Cancel',
+                              onPress: () => null,
+                              style: 'cancel',
+                            },
+                            {
+                              text: 'Exit',
+                              onPress: async () => {
+                                await AsyncStorage.removeItem("user");
+                                navigation.navigate("Home");
+                              },
+                            },
+                          ]);
+                          
+                        }}
                       >
                         <Image
                           style={styles.optionIcon}
@@ -155,7 +149,6 @@ const styles = StyleSheet.create({
   },
   headerView: {
     flex: 1,
-    // backgroundColor: "red",
     justifyContent: "center",
     marginStart: 15,
     marginEnd: 15,
