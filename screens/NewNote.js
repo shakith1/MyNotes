@@ -14,7 +14,6 @@ import { StatusBar } from "expo-status-bar";
 import React, { useEffect, useState } from "react";
 import moment from "moment";
 import DropDownPicker from "react-native-dropdown-picker";
-import { useFocusEffect } from "@react-navigation/native";
 import { ErrorUi } from "../components/Error";
 
 export function NewNoteUi({ navigation,route }) {

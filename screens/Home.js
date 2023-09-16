@@ -11,6 +11,7 @@ import {
 import { useFonts } from "expo-font";
 import { useState } from "react";
 import { ErrorUi } from "../components/Error";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function HomeUi({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -23,6 +24,14 @@ export function HomeUi({ navigation }) {
 
   const [error_1, setError_1] = useState(null);
   const [error_2, setError_2] = useState(null);
+
+  const storeData = async (value) => {
+    try {
+      await AsyncStorage.setItem('user', value);
+    } catch (e) {
+      // saving error
+    }
+  };
 
   if (fontsLoaded) {
     return (
@@ -71,7 +80,9 @@ export function HomeUi({ navigation }) {
               //   else if (responseText == "error_4")
               //   setError_2("Incorrect mobile number or password");
               //   else if (responseText == "success")
+              storeData(responseText);
                   navigation.navigate("Note",{"mobile":mobile});
+                  // alert(responseText)
             }}
           >
             <View style={styles.loginButton}>

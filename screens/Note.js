@@ -1,11 +1,8 @@
 import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useState } from "react";
 import {
-  Alert,
   Image,
-  ImageBackground,
-  Platform,
   Pressable,
   SafeAreaView,
   StyleSheet,
@@ -20,6 +17,7 @@ import {
   MenuProvider,
 } from "react-native-popup-menu";
 import { NoteListUI } from "../components/NoteList";
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 export function NoteUi({ navigation, route }) {
   const [fontsLoaded] = useFonts({
@@ -29,6 +27,21 @@ export function NoteUi({ navigation, route }) {
 
   const [username, setUserName] = useState(null);
   const [mobile, setMobile] = useState(null);
+
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      
+      if (jsonValue != null) {
+        var user = JSON.parse(jsonValue);
+        alert(user.fname)
+        setUserName(user.fname + " " + user.lname);
+        setMobile(user.mobile);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
 
   const getUser = async () => {
     const response = await fetch("http://192.168.43.9/MyNotes/search.php", {
@@ -40,11 +53,10 @@ export function NoteUi({ navigation, route }) {
     const user = await response.json();
     setUserName(user.fname + " " + user.lname);
     setMobile(user.mobile);
-    // mobile = user.mobile;
   };
 
   useEffect(() => {
-    getUser();
+    getData();
   }, []);
 
   if (fontsLoaded) {
