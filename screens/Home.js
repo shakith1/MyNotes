@@ -1,5 +1,7 @@
 import { StatusBar } from "expo-status-bar";
 import {
+  Alert,
+  BackHandler,
   Image,
   Pressable,
   SafeAreaView,
@@ -9,9 +11,10 @@ import {
   View,
 } from "react-native";
 import { useFonts } from "expo-font";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { ErrorUi } from "../components/Error";
-import AsyncStorage from '@react-native-async-storage/async-storage';
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useIsFocused } from "@react-navigation/native";
 
 export function HomeUi({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -24,84 +27,105 @@ export function HomeUi({ navigation }) {
 
   const [error_1, setError_1] = useState(null);
   const [error_2, setError_2] = useState(null);
+  const [ui, setUi] = useState(0);
 
   const storeData = async (value) => {
     try {
-      await AsyncStorage.setItem('user', value);
+      await AsyncStorage.setItem("user", value);
     } catch (e) {
       // saving error
     }
   };
 
+  const getData = async () => {
+    try {
+      const jsonValue = await AsyncStorage.getItem("user");
+      if (jsonValue != null) {
+        setUi(1);
+      }
+    } catch (e) {
+      // error reading value
+    }
+  };
+  
+  useEffect(() => {
+    getData();
+  }, []);
+
   if (fontsLoaded) {
-    return (
-      <SafeAreaView style={styles.container}>
-        <StatusBar style="auto" />
-        <View style={styles.iconView}>
-          <Image source={require("../assets/images/icon.png")} />
-        </View>
-        <View style={styles.contentView}>
-          <TextInput
-            style={styles.input}
-            placeholder="Mobile Number"
-            maxLength={10}
-            inputMode="numeric"
-            onChangeText={setMobile}
-            onChange={() => setError_1(null)}
-          />
-          <ErrorUi error={error_1} />
-          <TextInput
-            style={styles.input}
-            placeholder="Password"
-            secureTextEntry={true}
-            onChangeText={setPassword}
-            onChange={() => setError_2(null)}
-          />
-          <ErrorUi error={error_2} />
-          <Pressable
-            onPress={async () => {
-              const response = await fetch(
-                "http://192.168.43.9/MyNotes/signin.php",
-                {
-                  method: "POST",
-                  body: JSON.stringify({
-                    "mobile": mobile,
-                    "password": password,
-                  }),
-                }
-              );
-              const responseText = await response.text();
-              // if (responseText == "error_1")
-              //   setError_1("Please enter mobile number");
-              // else if (responseText == "error_2")
-              //   setError_1("Please enter valid mobile number");
-              // else if (responseText == "error_3")
-              //   setError_2("Please enter password");
-              //   else if (responseText == "error_4")
-              //   setError_2("Incorrect mobile number or password");
-              //   else if (responseText == "success")
-              storeData(responseText);
-                  navigation.navigate("Note",{"mobile":mobile});
-                  // alert(responseText)
-            }}
-          >
-            <View style={styles.loginButton}>
-              <Text style={styles.text}>Sign In</Text>
-            </View>
-          </Pressable>
-          <Pressable onPress={() => {
-            navigation.navigate("Register");
-            setError_1(null);
-            setError_2(null);
-            }}>
-            <View style={styles.registerButton}>
-              <Text style={styles.text}>Register</Text>
-            </View>
-          </Pressable>
-        </View>
-      </SafeAreaView>
-    );
-  }
+    if (ui == 0) {
+      return (
+        <SafeAreaView style={styles.container}>
+          <StatusBar style="auto" />
+          <View style={styles.iconView}>
+            <Image source={require("../assets/images/icon.png")} />
+          </View>
+          <View style={styles.contentView}>
+            <TextInput
+              style={styles.input}
+              placeholder="Mobile Number"
+              maxLength={10}
+              inputMode="numeric"
+              onChangeText={setMobile}
+              onChange={() => setError_1(null)}
+            />
+            <ErrorUi error={error_1} />
+            <TextInput
+              style={styles.input}
+              placeholder="Password"
+              secureTextEntry={true}
+              onChangeText={setPassword}
+              onChange={() => setError_2(null)}
+            />
+            <ErrorUi error={error_2} />
+            <Pressable
+              onPress={async () => {
+                const response = await fetch(
+                  "http://192.168.43.9/MyNotes/signin.php",
+                  {
+                    method: "POST",
+                    body: JSON.stringify({
+                      mobile: mobile,
+                      password: password,
+                    }),
+                  }
+                );
+                const responseText = await response.text();
+                // if (responseText == "error_1")
+                //   setError_1("Please enter mobile number");
+                // else if (responseText == "error_2")
+                //   setError_1("Please enter valid mobile number");
+                // else if (responseText == "error_3")
+                //   setError_2("Please enter password");
+                //   else if (responseText == "error_4")
+                //   setError_2("Incorrect mobile number or password");
+                //   else if (responseText == "success")
+                storeData(responseText);
+                navigation.navigate("Note");
+                // alert(responseText)
+              }}
+            >
+              <View style={styles.loginButton}>
+                <Text style={styles.text}>Sign In</Text>
+              </View>
+            </Pressable>
+            <Pressable
+              onPress={() => {
+                navigation.navigate("Register");
+                setError_1(null);
+                setError_2(null);
+              }}
+            >
+              <View style={styles.registerButton}>
+                <Text style={styles.text}>Register</Text>
+              </View>
+            </Pressable>
+          </View>
+        </SafeAreaView>
+      );
+    }
+  }else if(ui == 0)
+    navigation.navigate("Note");
 }
 
 const styles = StyleSheet.create({

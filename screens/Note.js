@@ -2,6 +2,8 @@ import { useFonts } from "expo-font";
 import { StatusBar } from "expo-status-bar";
 import { useEffect, useState } from "react";
 import {
+  Alert,
+  BackHandler,
   Image,
   Pressable,
   SafeAreaView,
@@ -18,8 +20,10 @@ import {
 } from "react-native-popup-menu";
 import { NoteListUI } from "../components/NoteList";
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { useBackHandler } from "@react-native-community/hooks";
+import { useIsFocused } from "@react-navigation/native";
 
-export function NoteUi({ navigation, route }) {
+export function NoteUi({ navigation}) {
   const [fontsLoaded] = useFonts({
     "Montserrat-Regular": require("../assets/fonts/Montserrat-Regular.ttf"),
     "Ubuntu-Regular": require("../assets/fonts/Ubuntu-Regular.ttf"),
@@ -28,13 +32,14 @@ export function NoteUi({ navigation, route }) {
   const [username, setUserName] = useState(null);
   const [mobile, setMobile] = useState(null);
 
+  const isFocused = useIsFocused();
+
   const getData = async () => {
     try {
       const jsonValue = await AsyncStorage.getItem("user");
       
       if (jsonValue != null) {
         var user = JSON.parse(jsonValue);
-        alert(user.fname)
         setUserName(user.fname + " " + user.lname);
         setMobile(user.mobile);
       }
@@ -58,6 +63,24 @@ export function NoteUi({ navigation, route }) {
   useEffect(() => {
     getData();
   }, []);
+
+  useBackHandler(() => {
+    if (isFocused) {
+      Alert.alert('Exit App', 'Do you want to exit the app?', [
+        {
+          text: 'Cancel',
+          onPress: () => null,
+          style: 'cancel',
+        },
+        {
+          text: 'Exit',
+          onPress: () => BackHandler.exitApp(),
+        },
+      ]);
+      return true; // Prevent the default back action only on the home page
+    }
+    return false; // Allow the default back action to occur (navigate to the previous screen)
+  });
 
   if (fontsLoaded) {
     return (
