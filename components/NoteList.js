@@ -1,5 +1,12 @@
 import { useEffect, useState } from "react";
-import { FlatList, Image, StyleSheet, Text, View } from "react-native";
+import {
+  ActivityIndicator,
+  FlatList,
+  Image,
+  StyleSheet,
+  Text,
+  View,
+} from "react-native";
 import { NoteListViewUi } from "./NoteListIView";
 
 export function NoteListUI({ mobile }) {
@@ -31,7 +38,12 @@ export function NoteListUI({ mobile }) {
     getData();
   });
 
-  if (ui == null) return false;
+  if (ui == null)
+    return (
+      <View style={styles.contentView}>
+        <ActivityIndicator size={"large"} color={"#f0b11d"} />
+      </View>
+    );
   else if (ui === 0) {
     return (
       <View style={styles.contentView}>
@@ -45,11 +57,11 @@ export function NoteListUI({ mobile }) {
     );
   } else {
     return (
-      <View style={{marginBottom:10}}>
+      <View style={{ marginBottom: 10 }}>
         <FlatList
           data={data}
-          renderItem={({ item,index }) => {
-            return <NoteListViewUi item={item} index={index} />
+          renderItem={({ item, index }) => {
+            return <NoteListViewUi item={item} index={index} />;
           }}
         />
       </View>

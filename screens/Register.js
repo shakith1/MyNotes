@@ -144,7 +144,7 @@ export function RegisterUI({ navigation }) {
               else if (responseText == "error_10")
                 setError_6("User already exists. Please Sign In");
               else if (responseText == "success"){
-                Alert.alert("Info", "Account created successfully");
+                Alert.alert("My Notes", "Account created successfully");
                 navigation.navigate('Home');
               }
             }}
