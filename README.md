@@ -19,21 +19,21 @@ MyNotes is a simple note application which is developed using React Native.
 ## Screenshots
 ### Create Account
 - Users have to create a account for use the application
-<img src="https://github.com/shakith1/MyNotes/assets/43404070/5bbbe6ec-5ff6-49de-b926-e7510b48152f" width="280" height="520">
+<img src="https://github.com/shakith1/MyNotes/assets/43404070/d14a74af-ec77-46fa-a2d6-5c3dde54dc66" width="280" height="520">
 
 ### Sign In
-<img src="https://github.com/shakith1/MyNotes/assets/43404070/6048bd08-ecfb-459d-ab13-f0cf20c759d7" width="280" height="520">
+<img src="https://github.com/shakith1/MyNotes/assets/43404070/ee39015c-2be1-479d-8375-0fcaef3f88ab" width="280" height="520">
 
 ### Home Page
 - Users can view their added notes in this page
-<img src="https://github.com/shakith1/MyNotes/assets/43404070/9612fdbc-bed1-43aa-a3b9-337947bc26d3" width="280" height="520">
+<img src="https://github.com/shakith1/MyNotes/assets/43404070/0aab1275-8a40-4e0f-8e89-a8250c7d07d1" width="280" height="520">
 <br/>
 
 - All the addded notes also displayed here
-<img src="https://github.com/shakith1/MyNotes/assets/43404070/6a1f6cfc-0a2f-4490-b4f9-99f2b62f0078" width="280" height="520">
-<img src="https://github.com/shakith1/MyNotes/assets/43404070/20987147-fa82-4ff3-9403-ab3a31207f56" width="280" height="520">
+<img src="https://github.com/shakith1/MyNotes/assets/43404070/52885af2-c7a5-4d96-b7d6-1b670af3252c" width="280" height="520" marginRight="50">
+<img src="https://github.com/shakith1/MyNotes/assets/43404070/3a72a0a6-82de-468f-a271-a1db7b7ae317" width="280" height="520">
 
 ### Add Note Page
 - Users can add a note here
-<img src="https://github.com/shakith1/MyNotes/assets/43404070/785338fe-2677-4778-b54b-0d07d98b472" width="280" height="520">
+<img src="https://github.com/shakith1/MyNotes/assets/43404070/92da8b9b-c73e-435e-87d4-a559545e7140" width="280" height="520">
 
